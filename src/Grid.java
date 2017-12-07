@@ -41,7 +41,7 @@ public class Grid {
 		int row = coordinate.getRowIndex();
 		int col = coordinate.getColumnIndex();
 		grid[row][col].attackThisCell();
-		if (grid[row][col].getStatus() == 3) {
+		if (grid[row][col].getStatus() == 2) {
 			totalBattleshipsHit++;
 			return true;
 		}
@@ -59,7 +59,7 @@ public class Grid {
     public int[][] getCellsStatus(boolean showAllBattleships) { //goes into HumanPlayer's getNextMove
         int[][] toReturn = new int[grid.length][grid[0].length];
 
-        if (showAllBattleships == true) {
+//        if (showAllBattleships == true) {
 			for (int i = 0; i < toReturn.length; i++) {
 				for (int j = 0; j < toReturn[0].length; j++) {
 					if (grid[i][j].getStatus() == 2) {
@@ -73,19 +73,19 @@ public class Grid {
 					}
 				}
 			}
-		} else {
-			for (int i = 0; i < toReturn.length; i++) {
-				for (int j = 0; j < toReturn.length; j++) {
-					if (grid[i][j].getStatus() == 0) {
-						toReturn[i][j] = 0;
-					} else if (grid[i][j].getStatus() == 1) {
-						toReturn[i][j] = 1;
-					} else if (grid[i][j].getStatus() == 2) {
-						toReturn[i][j] = 2;
-					}
-				}
-			}
-		}
+//		} else {
+//			for (int i = 0; i < toReturn.length; i++) {
+//				for (int j = 0; j < toReturn.length; j++) {
+//					if (grid[i][j].getStatus() == 0) {
+//						toReturn[i][j] = 0;
+//					} else if (grid[i][j].getStatus() == 1) {
+//						toReturn[i][j] = 1;
+//					} else if (grid[i][j].getStatus() == 2) {
+//						toReturn[i][j] = 2;
+//					}
+//				}
+//			}
+//		}
         return toReturn;
     }
 

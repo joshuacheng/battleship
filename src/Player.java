@@ -34,42 +34,37 @@ public abstract class Player {
     /**
      * Creates a 2D integer array with the ships on the board.
      *
-     * Default implementation will put them randomly. A subclass can override this functionality.
+     * Abstract method because humans will choose their placement and AI will be random.
+     * A subclass can override this functionality.
      *
      * @param ships The lengths of all the ships to place.
      * @param gridSize The size of the 2D array to create.
      * @return A 2D integer array with either EMPTY or NOT_HIT_BATTLESHIP.
      */
-    public int[][] setupBattleships(int[] ships, int gridSize) { //main playing method
-        int[][] newBoard = new int[gridSize][gridSize];
-		for (int i = 0; i < ships.length; i++) {
-			placeBattleship(newBoard, ships[i]);
-		}
-		return newBoard;
-    }
+    public abstract int[][] setupBattleships(int[] ships, int gridSize);
 
-    /**
-     * Optional helper method that puts one ship of a given length on the board.
-     *
-     * @param board The 2D integer array to add a ship to.
-     * @param shipLength The length of the ship to put.
-     */
-    private void placeBattleship(int[][] board, int shipLength) { //helper method
-		Random positioning = new Random();
-		if (positioning.nextInt(2) == 0) {
-			int rowStart = positioning.nextInt(board.length);
-			int colStart = positioning.nextInt(board.length - shipLength + 1);
-			for (int i = colStart; i < colStart + shipLength; i++) {
-				board[rowStart][i] = 3; 
-			}
-		} else {
-			int colStart = positioning.nextInt(board.length);
-			int rowStart = positioning.nextInt(board.length - shipLength + 1);
-			for (int i = rowStart; i < rowStart + shipLength; i++) {
-				board[i][colStart] = 3;
-			}
-		}
-    }
+//    /**
+//     * Optional helper method that puts one ship of a given length on the board.
+//     *
+//     * @param board The 2D integer array to add a ship to.
+//     * @param shipLength The length of the ship to put.
+//     */
+//    private void placeBattleship(int[][] board, int shipLength) { //helper method
+//		Random positioning = new Random();
+//		if (positioning.nextInt(2) == 0) {
+//			int rowStart = positioning.nextInt(board.length);
+//			int colStart = positioning.nextInt(board.length - shipLength + 1);
+//			for (int i = colStart; i < colStart + shipLength; i++) {
+//				board[rowStart][i] = 3; 
+//			}
+//		} else {
+//			int colStart = positioning.nextInt(board.length);
+//			int rowStart = positioning.nextInt(board.length - shipLength + 1);
+//			for (int i = rowStart; i < rowStart + shipLength; i++) {
+//				board[i][colStart] = 3;
+//			}
+//		}
+//    }
 
 	/**
 	 * ABSTRACT method.

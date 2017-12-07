@@ -22,7 +22,48 @@ public class RandomlyAttackingAIPlayer extends Player {
 
         this.random = new Random();
     }
+    
+    /** 
+     * 
+     */
+    public int[][] setupBattleships(int[] ships, int gridSize) {
+    	int[][] newBoard = new int[gridSize][gridSize];
+    	for (int i = 0; i < ships.length; i++) {
+    		boolean success = false;
+    		do {
+    			success = placeBattleship(newBoard, ships[i]);
+    		} while (!success);
+    	}
+    	return newBoard;
+    }
 
+    private boolean placeBattleship(int[][] board, int shipLength) { //helper method
+    	Random positioning = new Random();
+    	if (positioning.nextInt(2) == 0) {
+    		int rowStart = positioning.nextInt(board.length);
+    		int colStart = positioning.nextInt(board.length - shipLength + 1);
+    		for (int i = colStart; i < colStart + shipLength; i++) {
+    			if (board[rowStart][i] == 3) {
+    				return false;
+    			}
+    		}
+    		for (int i = colStart; i < colStart + shipLength; i++) {
+    			board[rowStart][i] = 3; 
+    		}
+    	} else {
+    		int colStart = positioning.nextInt(board.length);
+    		int rowStart = positioning.nextInt(board.length - shipLength + 1);
+    		for (int i = rowStart; i < rowStart + shipLength; i++) {
+    			if (board[i][colStart] == 3) {
+    				return false;
+    			}
+    		}
+    		for (int i = rowStart; i < rowStart + shipLength; i++) {
+    			board[i][colStart] = 3;
+    		}
+    	}
+    	return true;
+    }
     /**
      * Get the next random move that AI makes.
      *

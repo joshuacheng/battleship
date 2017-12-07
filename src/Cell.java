@@ -34,13 +34,13 @@ public class Cell {
 	 */
     public int getStatus() {
 		if (isBattleship == true && isHit == true) {
-			return 2;
+			return HIT_BATTLESHIP;
 		} else if (isBattleship == true && isHit == false) {
-			return 3;
+			return NOT_HIT_BATTLESHIP;
 		} else if (isBattleship == false && isHit == true) {
-			return 1;
+			return ATTACK_MISS;
 		} else {
-			return 0;
+			return EMPTY;
 		}
     }
 

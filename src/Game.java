@@ -39,8 +39,8 @@ public class Game {
         Grid opponentPlayerGrid = getOpponentPlayerGrid(currentPlayerIndex);
 
         if (currentPlayerIndex == 0) {
-			Point attack = ((HumanPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
-			opponentPlayerGrid.trySetAttack(attack);
+			Point attackPoint = ((HumanPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
+			opponentPlayerGrid.trySetAttack(attackPoint);
 		} else {
 			Point atk = ((RandomlyAttackingAIPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
 			opponentPlayerGrid.trySetAttack(atk);
