@@ -72,4 +72,12 @@ public class Game {
             return grids[0];
         }
     }
+    
+    /** Returns the AI player's grid.
+     * For debugging purposes.
+     * @return AI's grid
+     */
+    public Grid returnAIGrid() {
+    	return grids[1];
+    }
 }

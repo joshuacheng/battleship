@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -37,35 +38,86 @@ public class HumanPlayer extends Player {
 		int row = 0;
 		int col = 0;
 		boolean validCoordinate = false;
+		
+		 // TODO: FIX SO THAT IF COL FAILS, IT ONLY ASKS FOR COL AGAIN
 		while (validCoordinate == false) {
-			System.out.println("What row index do you want to attack?");
-			row = Integer.parseInt(scanner.nextLine());
-			System.out.println("What column index do you want to attack?");
-			col = Integer.parseInt(scanner.nextLine());
-			if (opponentCellsStatus[row][col] == 1 || opponentCellsStatus[row][col] == 2) {
-				System.out.println("You already tried that!");
-				continue;
-			}
-			if (row < playerCellsStatus.length && row >= 0 && col < playerCellsStatus.length && col >= 0) {
-				validCoordinate = true;
-			} else {
-				System.out.println("Those are not valid coordinates!");
+			try {
+				System.out.println("What row index do you want to attack?");
+				row = Integer.parseInt(scanner.nextLine());
+				System.out.println("What column index do you want to attack?");
+				col = Integer.parseInt(scanner.nextLine());
+				if (opponentCellsStatus[row][col] == 1 || opponentCellsStatus[row][col] == 2) {
+					System.out.println("You already tried that!");
+					continue;
+				}
+				if (row < playerCellsStatus.length && row >= 0 && col < playerCellsStatus.length && col >= 0) {
+					validCoordinate = true;
+				} else {
+					System.out.println("Those are not valid coordinates!");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Please enter a number.");
 			}
 		}
-		scanner.close();
+//		scanner.close();
 		return new Point(row, col);
 	}
-
 	public int[][] setupBattleships(int[] ships, int gridSize) {
 		int[][] newBoard = new int[gridSize][gridSize];
-		String[] shipNames = new String[] {"Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier"};
-		for (int i = 0; i < ships.length; i++) {
-			boolean success;
-			do {
-				success = placeBattleship(newBoard, ships[i], shipNames[i], gridSize);
-			} while (!success);
+		Scanner scan = new Scanner(System.in);		
+		System.out.println("0: Would you like to place your own ships, or 1: have them randomly placed for you? (0 or 1)");
+		int answer = 0;
+		do {
+			answer = scan.nextInt();
+		} while (!(answer == 1 || answer == 0));
+		
+		if (answer == 0) {
+			String[] shipNames = new String[] {"Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier"};
+			for (int i = 0; i < ships.length; i++) {
+				boolean success;
+				do {
+					success = placeBattleship(newBoard, ships[i], shipNames[i], gridSize);
+				} while (!success);
+			}
+		} else {
+			for (int i = 0; i < ships.length; i++) {
+				boolean success;
+				do {
+					success = randomlyPlaceBattleships(newBoard, ships[i]);
+				} while (!success);
+			}
 		}
+
+//		scan.close();
 		return newBoard;
+	}
+	
+	private boolean randomlyPlaceBattleships(int[][] board, int shipLength) {
+		Random positioning = new Random();
+    	if (positioning.nextInt(2) == 0) {
+    		int rowStart = positioning.nextInt(board.length);
+    		int colStart = positioning.nextInt(board.length - shipLength + 1);
+    		for (int i = colStart; i < colStart + shipLength; i++) {
+    			if (board[rowStart][i] == 3) {
+    				return false;
+    			}
+    		}
+    		for (int i = colStart; i < colStart + shipLength; i++) {
+    			board[rowStart][i] = 3; 
+    		}
+    	} else {
+    		int colStart = positioning.nextInt(board.length);
+    		int rowStart = positioning.nextInt(board.length - shipLength + 1);
+    		for (int i = rowStart; i < rowStart + shipLength; i++) {
+    			if (board[i][colStart] == 3) {
+    				return false;
+    			}
+    		}
+    		for (int i = rowStart; i < rowStart + shipLength; i++) {
+    			board[i][colStart] = 3;
+    		}
+    	}
+    	return true;
 	}
 
 	private boolean placeBattleship(int[][] board, int shipLength, String shipName, int gridSize) { //helper method
@@ -73,21 +125,41 @@ public class HumanPlayer extends Player {
 		int placeRow = 0;
 		int placeCol = 0;
 		String tempDir = "";
-		System.out.println("Place a " + shipName + "(length: " + shipLength +")");
+		if (shipName.charAt(0) == 'A' || shipName.charAt(0) == 'E' || shipName.charAt(0) == 'I' || shipName.charAt(0) == 'O' || shipName.charAt(0) == 'U') {
+			System.out.println("Place an " + shipName + "(length: " + shipLength +")");
+		} else {
+			System.out.println("Place a " + shipName + "(length: " + shipLength +")");
+		}
 		System.out.println("Enter your row:");
+
+		boolean error = true; 
 		do {
-			placeRow = scan.nextInt();
-			if ((placeRow >= gridSize) || (placeRow < 0)) {
-				System.out.println("Please enter a value between 0 and " + (gridSize - 1));
+			try {
+				placeRow = scan.nextInt();
+				if ((placeRow >= gridSize) || (placeRow < 0)) {
+					System.out.println("Please enter a value between 0 and " + (gridSize - 1));
+				}
+				error = false;
+			} catch (InputMismatchException e) {
+				System.out.println("Please enter a number.");
+				scan.nextLine();
 			}
-		} while ((placeRow >= gridSize) || (placeRow < 0));
+		} while ((placeRow >= gridSize) || (placeRow < 0) || error);
+		
+		error = true;
 		System.out.println("Enter your column:");
 		do {
-			placeCol = scan.nextInt();
-			if ((placeCol >= gridSize) || (placeCol < 0)) {
-				System.out.println("Please enter a value between 0 and " + (gridSize - 1));
-			}
-		} while ((placeCol >= gridSize) || (placeCol < 0));
+			try {
+				placeCol = scan.nextInt();
+				if ((placeCol >= gridSize) || (placeCol < 0)) {
+					System.out.println("Please enter a value between 0 and " + (gridSize - 1));
+				}
+				error = false;
+			} catch (InputMismatchException e) {
+				System.out.println("Enter a number. ");
+				scan.nextLine();
+			}				
+		} while ((placeCol >= gridSize) || (placeCol < 0) || error);
 
 		System.out.println("Enter your orientation (N, S, E, W):");
 		scan.nextLine();
@@ -177,7 +249,10 @@ public class HumanPlayer extends Player {
 			}
 
 		}
-		System.out.println("Ship placed!");
+		System.out.println("Ship placed!\n");
+		System.out.println("Your current board: ");
+		printGrid(board);
+		System.out.println("");
 		return true;
 
 	}
@@ -198,7 +273,6 @@ public class HumanPlayer extends Player {
 
 	/**
 	 * Helper method to print the grid header.
-	 *
 	 * No need to change.
 	 */
 	private void printColumnLabelHeader(int numberOfMarks) { //helper method

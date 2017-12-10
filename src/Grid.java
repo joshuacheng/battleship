@@ -17,12 +17,13 @@ public class Grid {
     public Grid(int[][] initialStatus) {
         totalBattleshipsHit = 0;
         grid = new Cell[initialStatus.length][initialStatus[0].length];
-		totalBattleships = 17;
+		totalBattleships = 0;
 		
         for (int i = 0; i < initialStatus.length; i++) {
             for (int j = 0; j < initialStatus[0].length; j++) { // INITIALIZE WHETHER A CELL IS A BATTLESHIP OR NOT
             	if (initialStatus[i][j] == 3) {
 					grid[i][j] = new Cell(true); 
+					totalBattleships++;
 				} else if (initialStatus[i][j] == 0){
 					grid[i][j] = new Cell(false);
 				}
@@ -97,21 +98,14 @@ public class Grid {
      * @return Whether the every battleship has been hit or not.
      */
     public boolean isLost() { //helper method
-		int shipsLeft = 0;
-		for (int row = 0; row < grid.length; row++) {
-			for (int col = 0; col < grid.length; col++) {
-				if (grid[row][col].getStatus() == 3) {
-					shipsLeft++;
-				}
-			}
-		}
-		if (shipsLeft == 0) {
-			return true;
-		}
-		return false;
+    	return totalBattleshipsHit == totalBattleships;
     }
 	
 	public Cell[][] returnGrid() {
 		return grid;
+	}
+	
+	public int getBattleshipsHit() {
+		return totalBattleshipsHit;
 	}
 }

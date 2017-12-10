@@ -26,20 +26,30 @@ public class Main {
 		int[][] p1Board = p1.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
 		int[][] p2Board = p2.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
 		Game game = new Game(p1Board, p2Board);
-		int turn = 0;
-		while (game.doTurn(p1) == false && game.doTurn(p2) == false) {
+//		int turn = 0;
+		boolean p1HasWon = false;
+		boolean p2HasWon = false;
+		
+		while (p1HasWon == false && p2HasWon == false) {
 			//if (turn == 0) {
 			//System.out.println("Player's turn.");
-			game.doTurn(p1);
+			p1HasWon = game.doTurn(p1);
+			if (p1HasWon) {
+				break;
+			}
+//			System.out.println(game.returnAIGrid().getBattleshipsHit());
 			//turn = 1;
 			currentPlayer = p1;
 			//} else {
 			//System.out.println("AI's turn.");
-			game.doTurn(p2);
+			p2HasWon = game.doTurn(p2);
+			if (p2HasWon) {
+				break;
+			}
 			//turn = 0;
 			currentPlayer = p2;
 			//}
+			
 		}
-        /* Your code here */
     }
 }
