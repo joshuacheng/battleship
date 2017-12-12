@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
 	/* Constants */
     private static final int BOARD_SIZE = 10;
@@ -5,15 +7,30 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Welcome to battleship!");
-
-        Player humanPlayer = new HumanPlayer("You", 0);
-        Player aiPlayer = new RandomlyAttackingAIPlayer("Evil AI", 1);
-		Player currentPlayer = humanPlayer;
-//		humanPlayer.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
-//		aiPlayer.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
-
-        play(humanPlayer, aiPlayer, currentPlayer);
-
+        
+        Player humanPlayer, aiPlayer, humanPlayer2, currentPlayer;
+        
+        Scanner scan = new Scanner(System.in);		
+		System.out.println("Would you like to 0: play against AI, or 1: play against a friend?");
+		int answer = 0;
+		do {
+			answer = scan.nextInt();
+		} while (!(answer == 1 || answer == 0));
+		
+		if (answer == 0) {
+			humanPlayer = new HumanPlayer("Player 1", 0);
+	        aiPlayer = new RandomlyAttackingAIPlayer("Evil AI", 1);   
+			currentPlayer = humanPlayer;
+			
+			play(humanPlayer, aiPlayer, currentPlayer);
+		} else {
+	        humanPlayer = new HumanPlayer("Player 1", 0);
+	        humanPlayer2 = new HumanPlayer("Player 2", 1);   
+			currentPlayer = humanPlayer;
+			
+	        play(humanPlayer, humanPlayer2, currentPlayer);
+		}
+		
         currentPlayer.printVictoryMessage();
     }
     
@@ -26,13 +43,11 @@ public class Main {
 		int[][] p1Board = p1.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
 		int[][] p2Board = p2.setupBattleships(SHIP_LENGTHS, BOARD_SIZE);
 		Game game = new Game(p1Board, p2Board);
-//		int turn = 0;
+
 		boolean p1HasWon = false;
 		boolean p2HasWon = false;
 		
 		while (p1HasWon == false && p2HasWon == false) {
-			//if (turn == 0) {
-			//System.out.println("Player's turn.");
 			p1HasWon = game.doTurn(p1);
 			if (p1HasWon) {
 				break;

@@ -64,6 +64,8 @@ public class RandomlyAttackingAIPlayer extends Player {
     	}
     	return true;
     }
+    
+
     /**
      * Get the next random move that AI makes.
      *

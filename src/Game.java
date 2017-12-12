@@ -1,5 +1,5 @@
 /**
- * The Game class represents the board that the players see.
+ * The Game class represents the game that the players see.
  */
 public class Game {
 	/* Instance variables */
@@ -42,7 +42,12 @@ public class Game {
 			Point attackPoint = ((HumanPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
 			opponentPlayerGrid.trySetAttack(attackPoint);
 		} else {
-			Point atk = ((RandomlyAttackingAIPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
+			Point atk;
+			if (player instanceof HumanPlayer) {
+				atk = ((HumanPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
+			} else {
+				atk = ((RandomlyAttackingAIPlayer)player).getNextMove(currentPlayerGrid.getCellsStatus(true), opponentPlayerGrid.getCellsStatus(false));
+			}
 			opponentPlayerGrid.trySetAttack(atk);
 		}
 

@@ -42,9 +42,9 @@ public class HumanPlayer extends Player {
 		 // TODO: FIX SO THAT IF COL FAILS, IT ONLY ASKS FOR COL AGAIN
 		while (validCoordinate == false) {
 			try {
-				System.out.println("What row index do you want to attack?");
+				System.out.println(name + ", what row index do you want to attack?");
 				row = Integer.parseInt(scanner.nextLine());
-				System.out.println("What column index do you want to attack?");
+				System.out.println(name + ", what column index do you want to attack?");
 				col = Integer.parseInt(scanner.nextLine());
 				if (opponentCellsStatus[row][col] == 1 || opponentCellsStatus[row][col] == 2) {
 					System.out.println("You already tried that!");
@@ -65,7 +65,7 @@ public class HumanPlayer extends Player {
 	public int[][] setupBattleships(int[] ships, int gridSize) {
 		int[][] newBoard = new int[gridSize][gridSize];
 		Scanner scan = new Scanner(System.in);		
-		System.out.println("0: Would you like to place your own ships, or 1: have them randomly placed for you? (0 or 1)");
+		System.out.println(name + ", would you like to 0: place your own ships, or 1: have them randomly placed for you? (0 or 1)");
 		int answer = 0;
 		do {
 			answer = scan.nextInt();
@@ -126,11 +126,11 @@ public class HumanPlayer extends Player {
 		int placeCol = 0;
 		String tempDir = "";
 		if (shipName.charAt(0) == 'A' || shipName.charAt(0) == 'E' || shipName.charAt(0) == 'I' || shipName.charAt(0) == 'O' || shipName.charAt(0) == 'U') {
-			System.out.println("Place an " + shipName + "(length: " + shipLength +")");
+			System.out.println(name + ", place an " + shipName + "(length: " + shipLength +")");
 		} else {
-			System.out.println("Place a " + shipName + "(length: " + shipLength +")");
+			System.out.println(name + ", place a " + shipName + "(length: " + shipLength +")");
 		}
-		System.out.println("Enter your row:");
+		System.out.println(name + ", enter your row:");
 
 		boolean error = true; 
 		do {
@@ -147,7 +147,7 @@ public class HumanPlayer extends Player {
 		} while ((placeRow >= gridSize) || (placeRow < 0) || error);
 		
 		error = true;
-		System.out.println("Enter your column:");
+		System.out.println(name + ", enter your column:");
 		do {
 			try {
 				placeCol = scan.nextInt();
@@ -161,7 +161,7 @@ public class HumanPlayer extends Player {
 			}				
 		} while ((placeCol >= gridSize) || (placeCol < 0) || error);
 
-		System.out.println("Enter your orientation (N, S, E, W):");
+		System.out.println(name + ", enter your orientation (N, S, E, W):");
 		scan.nextLine();
 		do {
 			tempDir = scan.nextLine();
@@ -239,18 +239,19 @@ public class HumanPlayer extends Player {
 				return false;
 			}
 			for (int i = 0; i < shipLength; i++) {
-				if (board[placeRow][placeCol - 1] == 3) {
+				if (board[placeRow][placeCol - i] == 3) {
 					System.out.println("Cannot overlap ships, try again.\n");
 					return false;
 				}
 			}
 			for (int i = 0; i < shipLength; i++) {
-				board[placeRow][placeCol - 1] = 3;
+				board[placeRow][placeCol - i] = 3;
 			}
 
 		}
-		System.out.println("Ship placed!\n");
-		System.out.println("Your current board: ");
+		System.out.println("Ship placed for " + name + "!\n");
+		System.out.println(name + "'s current board: \n");
+		printColumnLabelHeader(board.length);
 		printGrid(board);
 		System.out.println("");
 		return true;
